@@ -37,7 +37,7 @@ merged_data <- cbind(merged_data, activity.description = desc_activity_colmn)
 subjects <- data.frame(v1=character(0))
 subjects <- rbind(subjects,train_subjects)
 subjects <- rbind(subjects,test_subjects)
-merged_data <- cbind(merged_data, subject = subjects$V1, activity = activities$V1)
+merged_data <- cbind(merged_data, subject = subjects$V1)
 valid_column_names <- make.names(names=names(merged_data), unique=TRUE, allow_ = TRUE)
 names(merged_data) <- valid_column_names
 grouped_by_subject <- merged_data %>% group_by(subject)
