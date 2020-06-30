@@ -16,7 +16,7 @@ library(dplyr)
 
 merged_data <- merge(train_data,test_data, all = TRUE, sort = FALSE)
 
-#labelling the data set with descriptive variable names
+#labeling the data set with descriptive variable names
 
 colnames(merged_data) <- variable_names$V2
 
@@ -24,23 +24,24 @@ colnames(merged_data) <- variable_names$V2
 
 only_means <- select(merged_data,grep("mean()",colnames(merged_data), fixed = TRUE,value = TRUE))
 only_sd <- select(merged_data,grep("std()",colnames(merged_data), fixed = TRUE,value = TRUE))
+only_mean_and_sd_data <- cbind(only_means,only_sd)
 
 #descriptive activity names to name the activities in the data set
 activities <- data.frame(v1=character(0))
 activities <- rbind(activities,train_activities)
 activities <- rbind(activities,test_activities)
 desc_activity_colmn <- mapvalues(activities$V1,activity_labels$V1,activity_labels$V2)
-merged_data <- cbind(merged_data, activity.description = desc_activity_colmn)
+only_mean_and_sd_data <- cbind(only_mean_and_sd_data, activity.description = desc_activity_colmn)
 
 #average of each variable for each activity and each subject
 
 subjects <- data.frame(v1=character(0))
 subjects <- rbind(subjects,train_subjects)
 subjects <- rbind(subjects,test_subjects)
-merged_data <- cbind(merged_data, subject = subjects$V1)
+only_mean_and_sd_data <- cbind(only_mean_and_sd_data, subject = subjects$V1)
 valid_column_names <- make.names(names=names(merged_data), unique=TRUE, allow_ = TRUE)
-names(merged_data) <- valid_column_names
-grouped_by_subject <- merged_data %>% group_by(subject)
-mean_for_each_subject <- grouped_by_subject %>% summarise_at(1:561,mean)
-grouped_by_activity <- merged_data %>% group_by(activity.description)
-mean_for_each_actvity <- grouped_by_activity %>% summarise_at(1:561,mean)
+names(merged_data) <- valid_column_names #labeling the data set with descriptive variable names
+grouped_by_subject <- only_mean_and_sd_data %>% group_by(subject)
+mean_for_each_subject <- grouped_by_subject %>% summarise_at(1:66,mean)
+grouped_by_activity <- only_mean_and_sd_data %>% group_by(activity.description)
+mean_for_each_actvity <- grouped_by_activity %>% summarise_at(1:66,mean)
