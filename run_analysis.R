@@ -39,9 +39,8 @@ subjects <- data.frame(v1=character(0))
 subjects <- rbind(subjects,train_subjects)
 subjects <- rbind(subjects,test_subjects)
 only_mean_and_sd_data <- cbind(only_mean_and_sd_data, subject = subjects$V1)
-valid_column_names <- make.names(names=names(merged_data), unique=TRUE, allow_ = TRUE)
-names(merged_data) <- valid_column_names #labeling the data set with descriptive variable names
-grouped_by_subject <- only_mean_and_sd_data %>% group_by(subject)
-mean_for_each_subject <- grouped_by_subject %>% summarise_at(1:66,mean)
-grouped_by_activity <- only_mean_and_sd_data %>% group_by(activity.description)
-mean_for_each_actvity <- grouped_by_activity %>% summarise_at(1:66,mean)
+valid_column_names <- make.names(names=names(only_mean_and_sd_data), unique=TRUE, allow_ = TRUE)
+names(only_mean_and_sd_data) <- valid_column_names #labeling the data set with descriptive variable names
+grouped_by_activity_and_subject <- only_mean_and_sd_data %>% group_by(activity.description,subject)
+mean_for_each_activity_and_subject <- grouped_by_activity_and_subject %>% summarise_at(1:66,mean)
+
